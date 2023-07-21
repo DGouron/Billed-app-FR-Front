@@ -25,6 +25,14 @@ export default class NewBill {
     formData.append('file', file)
     formData.append('email', email)
 
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    const allowedExtensions = ['jpg', 'jpeg', 'png'];
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert('Type de fichier non autorisé');
+      file.value = '';
+      return;
+    }
+
     this.store
       .bills()
       .create({
@@ -42,6 +50,10 @@ export default class NewBill {
   }
   handleSubmit = e => {
     e.preventDefault()
+    if(!this.fileName) {
+      alert('Veuillez ajouter une image')
+      return
+    }
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
